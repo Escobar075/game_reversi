@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reversi (Othello) Funcional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Reversi (Othello)</h1>
+    
+    <div id="status-container">
+        <p>Jogador Atual: <span id="current-player-text">Preto</span></p>
+        <p>Preto: <span id="score-black">2</span> | Branco: <span id="score-white">2</span></p>
+    </div>
+
+    <div id="game-container">
+        <div id="board"></div>
+    </div>
+    
+    <button id="restart-button">Reiniciar Jogo</button>
+
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p id="game-over-message"></p>
+            <button id="modal-restart-button">Jogar Novamente</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

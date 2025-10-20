@@ -1,0 +1,184 @@
+/* Variáveis de cores */
+:root {
+    --board-color: #4CAF50; /* Verde do tabuleiro */
+    --border-color: #388E3C; /* Verde escuro para a borda e linhas */
+    --black-disc: #000000;
+    --white-disc: #ffffff;
+    --highlight-color: rgba(255, 255, 0, 0.4); /* Amarelo para movimentos válidos */
+    --disc-size: 50px; /* Variável para o tamanho da peça */
+    --flip-duration: 0.6s; /* Duração da animação de giro */
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+h1 {
+    color: var(--border-color);
+}
+
+#status-container {
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* ------------------------------------- */
+/* ESTILOS DO TABULEIRO (REQUISITOS)     */
+/* ------------------------------------- */
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 60px); 
+    grid-template-rows: repeat(8, 60px); 
+    width: 480px;
+    height: 480px;
+    
+    /* REQUISITO: Tabuleiro Verde */
+    background-color: var(--board-color); 
+    
+    /* REQUISITO: Borda ao redor do tabuleiro */
+    border: 8px solid var(--border-color); 
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6); 
+    
+    /* Necessário para a perspectiva 3D das peças */
+    perspective: 1000px;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    user-select: none;
+}
+
+/* ------------------------------------- */
+/* ESTILOS DAS PEÇAS E DESTAQUES         */
+/* ------------------------------------- */
+
+/* O 'disc-container' será o elemento que gira. */
+.disc-container {
+    width: var(--disc-size);
+    height: var(--disc-size);
+    position: relative;
+    border-radius: 50%;
+    transform-style: preserve-3d; /* Permite que os filhos preservem seu posicionamento 3D */
+    transition: transform var(--flip-duration); /* Aplica a transição ao container */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Sombra no container para 3D */
+}
+
+/* O 'disc' agora é a "face" da peça */
+.disc {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    backface-visibility: hidden; /* Esconde a face quando ela está de costas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo da face PRETA (frontal no início) */
+.disc.black {
+    background-color: var(--black-disc);
+    transform: rotateY(0deg); /* Posição inicial da face preta */
+    z-index: 2;
+}
+
+/* Estilo da face BRANCA (girada 180 graus para ser a face de trás) */
+.disc.white {
+    background-color: var(--white-disc);
+    border: 1px solid #ccc;
+    transform: rotateY(180deg); /* Face branca começa virada para trás */
+    z-index: 1;
+}
+
+/* CLASSE DE GIRO: Adicionada via JavaScript quando a peça precisa virar */
+.disc-container.flipped {
+    transform: rotateY(180deg); /* Gira o container para mostrar a face oposta */
+}
+
+/* Classes para definir o estado inicial da peça na célula */
+/* Se a peça é preta, ela não está "flipped" (gira 0deg) */
+.cell .black-piece .disc-container {
+    transform: rotateY(0deg);
+}
+
+/* Se a peça é branca, ela já está "flipped" (gira 180deg) */
+.cell .white-piece .disc-container {
+    transform: rotateY(180deg);
+}
+
+
+/* Destaque para movimentos válidos */
+.valid-move {
+    cursor: pointer;
+}
+
+.valid-move::after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--highlight-color);
+    position: absolute;
+    z-index: 10;
+}
+
+/* ------------------------------------- */
+/* ESTILOS DO MODAL                      */
+/* ------------------------------------- */
+.modal {
+    /* ... (Mantenha o resto do código do modal) */
+    display: none; 
+    position: fixed; 
+    z-index: 20; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.7); 
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#game-over-message {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: var(--border-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2e7d32;
+}
